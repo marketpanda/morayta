@@ -220,8 +220,7 @@ export default function Home() {
               
                 return (
                 <>
-                  <Card className="overflow-hidden" key={questionSet.id}>
-
+                  <Card className="overflow-hidden" key={questionSet.id}> 
                     <div className="bg-slate-200 px-4 py-2 cursor-default">{questionSet.question}</div>
                     <div className="flex flex-wrap gap-1 px-6 py-3 cursor-default">{Array.isArray(questionSet.choices) && questionSet.choices.map((option) => (
                       <div

@@ -18,12 +18,5 @@ export async function GET() {
         })
     } catch (error) {
         return NextResponse.json({ error: (error as Error).message })
-    }
-    
-    // try {
-    //     const [rows] = await pool.query(`SELECT * FROM morayta_database`) 
-      
-    // } catch (error) {
-    //     res.status(500).json({ error: (error as Error).message })
-    // }
+    } 
 }
