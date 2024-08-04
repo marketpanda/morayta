@@ -1,5 +1,6 @@
 "use client"
 
+ 
 import Glowingbutton from "@/components/Glowingbutton"; 
 import Navbar from "@/components/Navbar";
 import UserGreetText from "@/components/UserGreetText";
@@ -171,8 +172,29 @@ export default function Home() {
       setDone(true)
     }
 
+    const [data, setData] = useState<any | null>(null)
+
+    const testHandle = async() => {
+
+      try { 
+        const response = await fetch('/api')
+        // const response = await fetch('/api/basicQuery')
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const result  = await response.json() 
+        console.log(result)
+        setData(result)  
+      } catch (err) {
+        setData((err as Error).message)
+      }
+    }
+
     return (
-      <Button onClick={handleClick}>Submit</Button>
+      <>
+        <Button onClick={handleClick}>Submit</Button>
+        <Button onClick={testHandle}>{data ? "Success" : "Test"}</Button>
+      </>
     )
   }
 
