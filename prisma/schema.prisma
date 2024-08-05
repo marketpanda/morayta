@@ -16,5 +16,7 @@ datasource db {
 model Questions {
   id Int @id @default(autoincrement())
   question String
-  isPublished Boolean
+  options Json
+  answer String
+  isPublished Boolean?
 }

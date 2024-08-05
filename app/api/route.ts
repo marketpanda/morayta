@@ -11,7 +11,6 @@ export async function GET() {
 
     try {
         const [rows] = await pool.query(`SELECT * FROM questions`) 
-      
         return NextResponse.json({
             hello: "world",
             data: rows

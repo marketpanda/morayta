@@ -1,13 +1,18 @@
-"use client"
-
- 
+"use client" 
 import Glowingbutton from "@/components/Glowingbutton"; 
 import Navbar from "@/components/Navbar";
 import UserGreetText from "@/components/UserGreetText";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card"; 
+import { Card, CardContent } from "@/components/ui/card"; 
+import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
 import Image from "next/image";
+import Link from "next/link";
+import * as Select from '@radix-ui/react-select'
 import { useEffect, useState } from "react";
+import Select2 from "@/components/Select";
+import SelectDemo from "@/components/Select";
+import groupStuyStudents from "@/assets/group_study_students.jpg"
 
 interface Question { 
   id: string,
@@ -205,11 +210,38 @@ export default function Home() {
   return (
     <>
       <Navbar />
+     
       <main className="pt-[72px] flex min-h-screen items-center justify-between ">
         <div className="w-full sm:w-[800px] mx-auto bg-white font-mono text-sm relative">
         <div className="bg-gray-100 px-4 py-2 rounded text-xs right-5 top-20 fixed w-[320px] flex flex-wrap"> 
           <ScoreBoard />
         </div>
+        <Card className="p-2 mb-2 h-[200px] overflow-hidden">
+          <CardContent className="flex justify-center">
+            <Image className="w-1/2" alt="Morayta Review Exam" src={groupStuyStudents} width={300} height={200} />
+          </CardContent>
+        </Card>
+        <Card className="p-2 mb-2">
+          <CardContent>
+          <div className="text-xl font-semibold mt-5">Take exam</div>
+          
+            <form action="">
+
+                <div className="grid gap-4">
+               
+                
+                <SelectDemo />
+
+                <Button type="submit" className="w-full">
+                  Take Exam
+                </Button>
+                
+                
+                </div>
+            </form>
+            
+          </CardContent>
+        </Card>
           
           {/* <Glowingbutton /> */} 
           
