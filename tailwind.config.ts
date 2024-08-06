@@ -35,6 +35,11 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        // <link href="https://fonts.googleapis.com/css2?family=  :ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        sans: ['Montserrat', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif']
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

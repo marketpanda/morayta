@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import Select2 from "@/components/Select";
 import SelectDemo from "@/components/Select";
 import groupStuyStudents from "@/assets/group_study_students.jpg"
+import { useRouter } from "next/navigation";
 
 interface Question { 
   id: string,
@@ -99,6 +100,7 @@ export default function Home() {
     percentage: string
   }
   const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([])
+  const router = useRouter()
 
   const [done, setDone] = useState<boolean>(false)
 
@@ -117,7 +119,7 @@ export default function Home() {
     if (getIndex === -1) { 
       setUserAnswers(prev => ([...prev, answerWithChecking]))  
     } else {
-      setUserAnswers(prev => (prev.map(ans =>   
+      setUserAnswers(prev => (prev.map((ans, i) =>   
         ans.id !== id ? ans : { ...ans, option: option, isCorrect: isUserAnswerCorrect  } 
       )))
     }
@@ -178,6 +180,7 @@ export default function Home() {
     }
 
     const [data, setData] = useState<any | null>(null)
+    
 
     const testHandle = async() => {
 
@@ -206,6 +209,18 @@ export default function Home() {
   useEffect(() => { 
     console.log(userAnswers)
   }, [userAnswers]) 
+
+  const [subject, setSubject] = useState("")
+    
+  useEffect(() => {
+      console.log("subject ", subject)
+  }, [subject])
+
+  const handleTakeExam = (event:React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    console.log('forwarding to exam of ', subject)  
+    router.push('/exams')
+  }
   
   return (
     <>
@@ -221,19 +236,17 @@ export default function Home() {
             <Image className="w-1/2" alt="Morayta Review Exam" src={groupStuyStudents} width={300} height={200} />
           </CardContent>
         </Card>
-        <Card className="p-2 mb-2">
-          <CardContent>
-          <div className="text-xl font-semibold mt-5">Take exam</div>
+        <Card className="p-2 mb-2 flex justify-center">
+          <CardContent className="w-full sm:w-1/2">
+          <div className="text-xl font-semibold font-sans  mt-5 mb-3">Take exam</div>
           
-            <form action="">
+            <form action="handleTakeExam">
 
-                <div className="grid gap-4">
-               
-                
-                <SelectDemo />
+                <div className="grid gap-4"> 
+                <SelectDemo subject={subject} setSubject={setSubject} />
 
-                <Button type="submit" className="w-full">
-                  Take Exam
+                <Button type="submit" className="w-full" onClick={handleTakeExam}>
+                  Start
                 </Button>
                 
                 
@@ -254,8 +267,9 @@ export default function Home() {
                 <>
                   <Card className="overflow-hidden" key={questionSet.id}> 
                     <div className="bg-slate-200 px-4 py-2 cursor-default">{questionSet.question}</div>
-                    <div className="flex flex-wrap gap-1 px-6 py-3 cursor-default">{Array.isArray(questionSet.choices) && questionSet.choices.map((option) => (
+                    <div className="flex flex-wrap gap-1 px-6 py-3 cursor-default">{Array.isArray(questionSet.choices) && questionSet.choices.map((option, n) => (
                       <div
+                        key={`${questionSet.id}-${n}`}
                         onClick={() => handleSelectAnswer({id: questionSet.id, question: questionSet.question, option:option})}
                         className={`w-full md:w-2/5 ${isSelectedAnswer(questionSet.id, option) ? 'bg-gray-300' : 'bg-gray-100' }  px-2 py-1 rounded hover:bg-orange-400 transition duration-300 cursor-pointer`}>
                           {option}

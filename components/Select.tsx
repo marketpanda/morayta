@@ -4,14 +4,15 @@ import classnames from 'classnames';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import SelectItem from './SelectItem';
 
-const SelectDemo = () => {
-    const [value, setValue] = useState("")
-    
-    useEffect(() => {
-        console.log("value ", value)
-    }, [value])
+interface SubjectFormProps {
+  subject: string,
+  setSubject: React.Dispatch<React.SetStateAction<string>>
+}
+
+const SelectDemo:React.FC<SubjectFormProps> = ({ subject, setSubject}) => {
+   
     return (
-      <Select.Root value={value} onValueChange={setValue}>
+      <Select.Root value={subject} onValueChange={setSubject}>
         <Select.Trigger
           className="inline-flex items-center justify-center rounded px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-violet11 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-violet9 outline-none"
           aria-label="Food"
