@@ -10,7 +10,7 @@ type Data = {
 export async function GET() {
 
     try {
-        const [rows] = await pool.query(`SELECT * FROM questions`) 
+        const [rows] = await pool.query(`SELECT * FROM Questions`) 
         return NextResponse.json({
             hello: "world",
             data: rows

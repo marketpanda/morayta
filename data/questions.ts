@@ -1,12 +1,4 @@
-interface Question { 
-  id: string,
-  question: string,
-  option: string[],
-  answer: string,
-  // option?: string,
-  answerExplanation?: string
-}
-
+ 
 export const questions = [
     {
       // id: "74b26123-bf3d-4aa6-8fb5-6f86b8d9032e",
