@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Morayta: Architecture Board Exam Reviewer",
-  description: "Helping you pass",
+  description: "Online reviewer",
 };
 
 export default function RootLayout({

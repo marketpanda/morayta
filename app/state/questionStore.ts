@@ -1,11 +1,13 @@
-import { Question } from "../page"
 import { create } from 'zustand'
+import { Question } from '../_types/types'
+
 type QuestionStoreType = {
-    theQuestions: Question[],
-    setQuestions: (theQuestions: Question[]) => void
+    examQuestions: Question[],
+    setQuestions: (examQuestions: Question[]) => void
 }
  
 export const useQuestionStore = create<QuestionStoreType>((set) => ({
-    theQuestions:[],
-    setQuestions: (theQuestions) => set({theQuestions})
+    examQuestions:[],
+    setQuestions: (examQuestions) => set({examQuestions})
 }))
+
