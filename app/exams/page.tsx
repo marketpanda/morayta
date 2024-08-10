@@ -38,7 +38,7 @@ const page:React.FC = () => {
                   <SwiperSlide>
                     <div className='bg-gradient-to-bl from-rose-100 to-teal-100 rounded shadow h-[324px] border flex items-center cursor-default justify-center'> 
                       <span className='select-none text-slate-900 text-xl font-semibold font-sans w-3/4 text-wrap'>{ subject }</span>
-                    </div>
+                    </div> 
                   </SwiperSlide>
                 ))
               } 
