@@ -1,10 +1,12 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { CardContent } from '@/components/ui/card'
-import React, { useEffect, useState } from 'react' 
+import React, { useEffect, useRef, useState } from 'react' 
 import Lottie from "lottie-react"
 import animateCheck from '@/app/_components/assets/animation-check.json'
+import animateCheckSimple from '@/app/_components/assets/animation-check-simple.json'
 import { motion, AnimatePresence } from 'framer-motion'
+import { link } from 'fs'
 
 const DailyQuestions:React.FC = () => {
     //https://medium.com/incresco/animating-the-web-with-lottie-best-practices-for-optimization-be02ea24fc77
@@ -15,9 +17,12 @@ const DailyQuestions:React.FC = () => {
 
     const [inputAnswer, setInputAnswer] = useState<string>("")
     const [examNode, setExamNode] = useState<number>(0)
-    const [userAnswers, setUserAnswers] = useState<string>("")
 
     const [showQuestion, setShowQuestion] = useState(true)
+
+    const [submitted, setSubmitted] = useState(false)
+
+    const [finalMessage, setFinalMessage] = useState<string | null>(null)
 
     interface DailyQuestionProp {
         question:string,
@@ -38,21 +43,23 @@ const DailyQuestions:React.FC = () => {
             answer: "Pantheon"
         }
     ]
-
-    const delay = async(time:number) => {
-        await new Promise(resolve => setTimeout(resolve, time))
-    }
-
+    
     const moveQuestionNode = async() => { 
         await new Promise(resolve => setTimeout(resolve, 1000))
-        if (examNode < dailyQuestions.length - 1) {
+        if (examNode <= dailyQuestions.length - 1) {
             setExamNode(prev => prev + 1) 
-        } 
+        }
+        if (examNode === dailyQuestions.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            setFinalMessage("Explore more questions below..") 
+        }
     } 
 
     const handleAnswer = (event:React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault() 
- 
+
+        setSubmitted(true)
+
         const { answer } = dailyQuestions[examNode] 
         setShowQuestion(false)
         
@@ -64,17 +71,21 @@ const DailyQuestions:React.FC = () => {
         moveQuestionNode()  
       
         setInputAnswer("")  
-    }
-
-   
+    } 
+    
     const handleInputAnswer = (event:React.ChangeEvent<HTMLInputElement>) => { 
         event.preventDefault()
         setInputAnswer(event?.target.value) 
     }
 
+    const inputRefStarterQuestions = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        inputRefStarterQuestions.current?.focus() 
+    }, [])
+
     useEffect(() => { 
     }, [inputAnswer])
-
 
     return (
     <CardContent className="flex flex-col items-center justify-start gap-4 p-0 w-full">
@@ -84,33 +95,48 @@ const DailyQuestions:React.FC = () => {
                     toggle &&
                     <motion.div
                         initial = {{ opacity: 0 }}
-                        animate = {{ opacity: 1 }}>
+                        animate = {{ opacity: 1 }}
+                        >
                         {
-                             showQuestion && dailyQuestions[examNode].question
+                            showQuestion
+                            && examNode <= dailyQuestions.length - 1
+                            && dailyQuestions[examNode].question
                         } 
                     </motion.div>
                 }
             </AnimatePresence>
-        </div>       
-       
-        <form className="flex gap-2">
-            <input onChange={handleInputAnswer} value={inputAnswer}  type="text" className="m-0 font-semibold font-sans text-xl border-b-4 outline-none" /> 
-            <Button onClick={handleAnswer} className="">Submit</Button>
-        </form>    
-            
-        {
-            !disappear && (  
-                <div className='w-[140px] absolute '> 
-                    <Lottie animationData={animateCheck}
-                    loop={false}
-                    onComplete={() => {
-                        setDisappear(true)  
-                    } 
+            { finalMessage && finalMessage }
+        </div>     
+        <div className='flex items-center p-0 m-0 gap-3 sm:w-1/2 w-full '>
+            <form className="flex gap-2 border-b-2 m-o p-0 items-center justify-between w-full h-12">
+                <input
+                    ref={inputRefStarterQuestions}
+                    onChange={handleInputAnswer}
+                    value={inputAnswer}
+                    type="text"
+                    className="m-0 font-semibold font-sans text-xl border-0 outline-none" /> 
+
+                {
+                    inputAnswer && (
+                        <Button onClick={handleAnswer} variant="link" size="icon"
+                            className='font-sans outline-none'>Submit</Button> 
+                    ) 
                 }
-                    />
-                </div>
-            ) 
-        }   
+                {
+                    !disappear && ( 
+                    <div className='w-12'>
+                        <Lottie
+                            animationData={animateCheckSimple}
+                            loop={false}
+                            onComplete={() => {
+                                setDisappear(true)  
+                                setSubmitted(false) }} />
+                    </div>
+                    ) 
+                }
+            </form>   
+        </div> 
+       
         {
             showWrong && (  
                 <div className='w-[140px] absolute '> 
